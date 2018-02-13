@@ -1,0 +1,3 @@
+[viewtrustDEV2CentOS]
+localhost ansible_connection=local
+

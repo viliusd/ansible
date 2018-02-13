@@ -1,0 +1,3 @@
+[viewtrustDEV3]
+localhost ansible_connection=local
+

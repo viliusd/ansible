@@ -1,0 +1,33 @@
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: Create a VM from a template
+      vmware_guest:
+        hostname: 10.100.28.51
+        username: administrator@vsint.local
+        password: VMwar3!!
+        datacenter: vc4
+        validate_certs: no
+        folder: "{{ item.DIRECTORY }}"
+        name: "{{ item.NAME }}"
+        state: poweredon
+        template: RHEL-7.4-Viewtrust
+        disk:
+        - size_gb: "{{ item.DISK }}"
+          type: thin
+          datastore: xstrvc4_00
+        hardware:
+          memory_mb: "{{ item.MEMORY }}"
+          num_cpus: "{{ item.CPU }}"
+          scsi: paravirtual
+        networks:
+        - name: "{{ item.NETWORK }}"
+          ip: "{{ item.IP }}"
+          netmask: 255.255.255.224
+          gateway: "{{ item.GATEWAY }}"
+          domain: vt.local
+          type: static
+      delegate_to: localhost
+      with_items: "{{ vms }}"
+      register: deploy
+

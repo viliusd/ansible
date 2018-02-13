@@ -1,0 +1,32 @@
+- hosts: all
+  tasks:
+    - name: Create a VM from a template
+      vmware_guest:
+        hostname: 10.100.28.51
+        username: administrator@vsint.local
+        password: VMwar3!!
+        datacenter: vc4
+        validate_certs: no
+        cluster: Cluster2_VC4
+        folder: /kubernetes
+        name: kubernetesNode2 
+        state: poweredon
+        template: RHEL-7.4-Viewtrust
+        disk:
+        - size_gb: 200
+          type: thin
+          datastore: xstrvc4_00
+        hardware:
+          memory_mb: 16384
+          num_cpus: 4
+          scsi: paravirtual
+        networks:
+        - name: VTRST-VT07-10.100.248.192%2f27-VL356
+          ip: 10.100.248.198
+          netmask: 255.255.255.224
+          gateway: 10.100.248.193
+          domain: vt.local
+          type: static
+      delegate_to: localhost
+      register: deploy
+

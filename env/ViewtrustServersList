@@ -1,0 +1,3 @@
+[ViewtrustServersList]
+all ansible_connection=local
+

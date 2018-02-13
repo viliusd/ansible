@@ -1,0 +1,31 @@
+- hosts: all
+  tasks:
+    - name: Create a VM from a template
+      vmware_guest:
+        hostname: 10.100.248.132
+        username: administrator@vsphere.local
+        password: VMware1!
+        datacenter: DC1
+        validate_certs: no
+        folder: /VMs
+        name: "{{ VM_NAME }}"
+        state: poweredon
+        template: "{{ TEMPLATE }}"
+        disk:
+        - size_gb: 20
+          type: thin
+          datastore: vt1vc60
+        hardware:
+          memory_mb: "{{ VM_RAM }}"
+          num_cpus: "{{ VM_CPU }}"
+          scsi: paravirtual
+        networks:
+        - name: VTRST-VT06-10.100.248.128%2f27
+          ip: "{{ VM_IP }}"
+          netmask: 255.255.255.224
+          gateway: 10.100.248.129
+          domain: vt.local
+          type: static
+      delegate_to: localhost
+      register: deploy
+

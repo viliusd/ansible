@@ -1,0 +1,13 @@
+hostname: "10.100.248.132"
+vcentername: "vt1vc60"
+username: "administrator@vsphere.local"
+password: "VMware1!"
+datacenter: "DC1"
+cluster: "mgmt"
+env_name: "vt1vc60"
+vcenter_version: "6.0"
+esxi_hosts: [{IP: '10.100.248.133', NAME: '10.100.248.133', USER: 'root', PASS: 'Password1'},
+        {IP: '10.100.248.134', NAME: '10.100.248.133', USER: 'root', PASS: 'Password1'}]
+networks: [{NAME: 'VTRST-VT06-10.100.248.128%2f27', VLAN: 354, TYPE: 'earlyBinding'}]
+
+

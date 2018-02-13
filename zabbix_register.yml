@@ -1,0 +1,28 @@
+- hosts: all
+  tasks:
+    - name: install the zabbix rpm from a remote repo
+      yum:
+        name: http://repo.zabbix.com/zabbix/3.0/rhel/7/x86_64/zabbix-release-3.0-1.el7.noarch.rpm
+        state: present       
+    - name: install the zabbix-agent from a remote repo
+      yum:
+        name: zabbix-agent
+        state: latest
+    - name: start firewall
+      command: systemctl start firewalld
+    - name: open firewall port
+      command: firewall-cmd --zone=public --add-port=10050/tcp --permanent
+    - name: restart firewall
+      command: systemctl restart firewalld 
+    - name: add server to zabbix config
+      command: sed -i "s#^\(Server=\).*#\1zabbix.int.vslab.io#" /etc/zabbix/zabbix_agentd.conf
+    - name: add server to zabbix config
+      command: sed -i "s#^\(ServerActive=\).*#\1zabbix.int.vslab.io#" /etc/zabbix/zabbix_agentd.conf
+    - name: add hostname to zabbix config
+      command: sed -i "s#^\(Hostname=\).*#\1$HOSTNAME#" /etc/zabbix/zabbix_agentd.conf
+    - name: add system.uname to zabbix config
+      command: echo HostMetadataItem=system.uname >> /etc/zabbix/zabbix_agentd.conf 
+    - name: add DNS
+      command: echo "nameserver 10.131.144.15" >> /etc/resolv.conf 
+    - name: restart zabbix agent
+      command: systemctl restart zabbix-agent 	  

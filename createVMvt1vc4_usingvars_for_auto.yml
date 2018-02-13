@@ -1,0 +1,24 @@
+- hosts: all
+  tasks:
+    - name: Create a VM from a template
+      vmware_guest:
+        hostname: 10.100.28.51
+        username: administrator@vsint.local
+        password: VMwar3!!
+        datacenter: vc4
+        cluster: Cluster2_VC4
+        validate_certs: no
+        folder: /auto
+        name: "{{ VM_NAME }}" 
+        state: poweredon
+        template: "{{ TEMPLATE }}"
+        networks:
+        - name: VTRST-VT01-10.100.248.0%2f27-VL350
+          ip: "{{ VM_IP }}"
+          netmask: 255.255.255.224
+          gateway: 10.100.248.1
+          domain: vtlab.local
+          type: static
+      delegate_to: localhost
+      register: deploy
+

@@ -1,0 +1,36 @@
+[viewtrustVMdeploy]
+localhost ansible_connection=local
+
+[viewtrustDEV1]
+localhost ansible_connection=local
+
+[viewtrustDEV2CentOS]
+localhost ansible_connection=local
+
+[viewtrustDEV3]
+localhost ansible_connection=local
+
+[viewtrustTest]
+localhost ansible_connection=local
+
+[viewtrustQA1kafka]
+localhost ansible_connection=local
+
+[viewtrustDEV2kafkaCentOS]
+localhost ansible_connection=local
+
+[viewtrustQA2kafka]
+localhost ansible_connection=local
+
+[viewtrustQA1]
+localhost ansible_connection=local
+
+[viewtrustQA2]
+localhost ansible_connection=local
+
+[viewtrustTA1]
+localhost ansible_connection=local
+
+[viewtrustTA2CentOS]
+localhost ansible_connection=local
+

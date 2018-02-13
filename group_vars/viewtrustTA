@@ -1,0 +1,3 @@
+---
+vms: [{IP: '10.100.248.69', NAME: 'vt-ta-aio2', DISK: '100', NETWORK: 'VTRST-VT03-10.100.248.64%2f27-VL352', GATEWAY: '10.100.248.65', MEMORY: '8192', CPU: '4', DIRECTORY: '/TA/Viewtrust_TA/'}]
+

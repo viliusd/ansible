@@ -1,0 +1,3 @@
+[viewtrustMonolytics]
+localhost ansible_connection=local
+

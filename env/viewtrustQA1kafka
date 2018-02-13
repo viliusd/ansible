@@ -1,0 +1,3 @@
+[viewtrustQA1kafka]
+localhost ansible_connection=local
+

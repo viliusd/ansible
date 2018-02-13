@@ -1,0 +1,6 @@
+---
+vms: [{IP: '10.100.248.228', NAME: 'kubernetesMaster', DISK: '500', NETWORK: 'VTRST-VT08-10.100.248.224%2f27-VL357', GATEWAY: '10.100.248.225', MEMORY: '8192', CPU: '2', DIRECTORY: '/kubernetes/'},
+      {IP: '10.100.248.229', NAME: 'kubernetesNode1', DISK: '200', NETWORK: 'VTRST-VT08-10.100.248.224%2f27-VL357', GATEWAY: '10.100.248.225', MEMORY: '16384', CPU: '4', DIRECTORY: '/kubernetes/'},
+      {IP: '10.100.248.230', NAME: 'kubernetesNode2', DISK: '200', NETWORK: 'VTRST-VT08-10.100.248.224%2f27-VL357', GATEWAY: '10.100.248.225', MEMORY: '16384', CPU: '4', DIRECTORY: '/kubernetes/'}]
+    
+

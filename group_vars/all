@@ -1,0 +1,12 @@
+---
+dns_servers:
+- "10.131.144.15"
+- "10.131.144.16"
+switch_name: 'dvSwitch'
+domain_name: 'vt.local'
+nfs_storage: [{NAME: 'ISO', PATH: '/nfs/ISO', IP: '10.100.240.6'},
+              {NAME: 'OVA', PATH: '/nfs/OVA', IP: '10.100.240.6'},
+              {NAME: "templates{{ vcenter_version }}", PATH: "/nfs/templates{{ vcenter_version }}", IP: '10.100.240.6'},
+              {NAME: "{{ env_name }}", PATH: "/exports/{{ env_name }}", IP: '10.100.248.111'}]
+vcenter_license: {'5.5': 'N4435-0EK1K-M834E-0K0K4-8E9L0', '6.0': 'MH03L-0C1DM-18T9Q-07102-2924N'}
+esxi_license: {'5.5': 'TN41L-48G45-58J40-04X8K-98D00', '6.0': 'Z10CJ-0Y5D4-58H8H-09WK6-8T01N'}

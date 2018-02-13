@@ -1,0 +1,121 @@
+- hosts: all
+  tasks:
+  - name: Create Datacenter
+    vmware_datacenter:
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      datacenter_name: "{{ datacenter }}"
+      validate_certs: no
+      state: present
+  - name: Create Cluster
+    vmware_cluster:
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+      datacenter_name: "{{ datacenter }}"
+      cluster_name: "{{ cluster }}"
+      enable_ha: yes
+      enable_drs: yes
+      enable_vsan: yes
+  - name: Add ESXi host
+    vmware_host:
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+      esxi_hostname: "{{ item.NAME }}"
+      esxi_username: "{{ item.USER }}"
+      esxi_password: "{{ item.PASS }}"
+      datacenter_name: "{{ datacenter }}"
+      cluster_name: "{{ cluster }}"
+    with_items: "{{ esxi_hosts }}"
+  - name: Configure ESXi hostname and DNS servers
+    local_action:
+      module: vmware_dns_config
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+      change_hostname_to: "{{ item.NAME }}"
+      dns_servers: "{{ dns_servers }}"
+      domainname: "{{ domain_name }}"
+    with_items: "{{ esxi_hosts }}"
+  - name: Create dvswitch
+    local_action:
+      module: vmware_dvswitch
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      datacenter_name: "{{ datacenter }}"
+      validate_certs: no
+      switch_name: dvSwitch
+      mtu: 9000
+      uplink_quantity: 2
+      discovery_proto: lldp
+      discovery_operation: both
+      state: present
+  - name: Add portgroups
+    vmware_dvs_portgroup:
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+      portgroup_name: "{{ item.NAME }}"
+      switch_name: "{{ switch_name }}"
+      vlan_id: "{{ item.VLAN }}"
+      num_ports: 128
+      portgroup_type: "{{ item.TYPE }}"
+      state: present
+    with_items: "{{ networks }}"
+  - name: Add NFS storages
+    local_action:
+      module: vcenter_nfs_ds
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+      esxi_hostname: "{{ item[1].IP }}"
+      nfs_host: "{{ item[0].IP }}"
+      nfs_path: "{{ item[0].PATH }}"
+      nfs_name: "{{ item[0].NAME }}"
+      nfs_access: "readWrite"
+      state: present
+    with_nested:
+      - "{{ nfs_storage }}"
+      - "{{ esxi_hosts }}"
+  - name: Configure NTP settings
+    local_action:
+      module: vcenter_host_ntp
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+      cluster_name: "{{ cluster }}"
+      ntp_server: "time.nist.gov"
+      state: present
+  - name: Add host to vDS
+    vmware_dvs_host:
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+      esxi_hostname: "{{ item.IP }}"
+      switch_name: "{{ switch_name }}"
+      vmnics:
+        - vmnic0
+    with_items: "{{ esxi_hosts }}"
+  - name: Migrate vmk from vSS to vDS
+    vmware_migrate_vmk:
+      hostname: "{{ hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+      current_portgroup_name: "Management Network"
+      current_switch_name: "vSwitch0"
+      device: "vmk0"
+      esxi_hostname: "{{ item.IP }}"
+      migrate_portgroup_name: "{{ networks.NAME }}"
+      migrate_switch_name: "{{ switch_name }}"
+    with_items: "{{ esxi_hosts }}"

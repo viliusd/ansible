@@ -1,0 +1,31 @@
+- hosts: all
+  tasks:
+    - name: Create a VM from a template
+      vmware_guest:
+        hostname: 10.100.28.51
+        username: administrator@vsint.local
+        password: VMwar3!!
+        datacenter: vc4
+        validate_certs: no
+        folder: /Devops
+        name: xStreamAIO45 
+        state: poweredon
+        template: CentOS6.9-vc4
+        disk:
+        - size_gb: 20
+          type: thin
+          datastore: xstrvc4_00
+        hardware:
+          memory_mb: 8192
+          num_cpus: 4
+          scsi: paravirtual
+        networks:
+        - name: VTRST-VT04-10.100.248.96%2f27-VL353
+          ip: 10.100.248.115
+          netmask: 255.255.255.224
+          gateway: 10.100.248.97
+          domain: vtlab
+          type: static
+      delegate_to: localhost
+      register: deploy
+

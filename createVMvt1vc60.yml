@@ -1,0 +1,31 @@
+- hosts: all
+  tasks:
+    - name: Create a VM from a template
+      vmware_guest:
+        hostname: 10.100.248.132
+        username: administrator@vsphere.local
+        password: VMware1!
+        datacenter: DC1
+        validate_certs: no
+        folder: /VMs
+        name: CentOS7VM 
+        state: poweredon
+        template: CentOS_7.4_x64_6.0.0
+        disk:
+        - size_gb: 20
+          type: thin
+          datastore: vt1vc60
+        hardware:
+          memory_mb: 8196
+          num_cpus: 4
+          scsi: paravirtual
+        networks:
+        - name: VTRST-VT06-10.100.248.128%2f27
+          ip: 10.100.248.135
+          netmask: 255.255.255.224
+          gateway: 10.100.248.129
+          domain: vt.local
+          type: static
+      delegate_to: localhost
+      register: deploy
+
