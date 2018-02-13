@@ -4,7 +4,7 @@
       vmware_guest:
         hostname: 10.100.28.51
         username: administrator@vsint.local
-        password: VMwar3!!
+        password: **********
         datacenter: vc4
         validate_certs: no
         cluster: Cluster2_VC4
