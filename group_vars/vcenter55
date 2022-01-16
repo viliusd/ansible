@@ -1,7 +1,7 @@
 hostname: "10.100.248.164"
 vcentername: "vt1vc55"
 username: "administrator@vsphere.local"
-password: "VMware1!"
+password: "******"
 datacenter: "DC1"
 cluster: "mgmt"
 env_name: "vt1vc55"
